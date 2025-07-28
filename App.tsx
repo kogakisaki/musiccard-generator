@@ -141,7 +141,6 @@ const App: React.FC = () => {
       const canvas = await html2canvas(cardRef.current, {
         useCORS: true,
         allowTaint: true, // Thêm tùy chọn này
-        backgroundColor: backgroundColor, // Use dynamic background color
         scale: 2,
         onclone: (clonedDocument: Document) => {
           const clonedCard = clonedDocument.getElementById('card-to-download');
@@ -149,8 +148,8 @@ const App: React.FC = () => {
           
           // Ensure background is applied to the cloned element for capture
           clonedCard.style.backgroundColor = backgroundColor;
-          clonedCard.style.overflow = 'hidden'; // Thêm thuộc tính này
-          clonedCard.style.boxSizing = 'border-box'; // Thêm thuộc tính này
+          clonedCard.style.overflow = 'hidden';
+          clonedCard.style.boxSizing = 'border-box';
 
           const inputs = clonedCard.querySelectorAll('input.editable-text');
           inputs.forEach(node => {

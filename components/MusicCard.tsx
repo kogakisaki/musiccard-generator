@@ -42,8 +42,8 @@ export const MusicCard = forwardRef<HTMLDivElement, MusicCardProps>(({
 }, ref) => (
   <div 
     ref={ref} 
-    id="card-to-download" 
-    className="flex flex-col items-stretch gap-4 px-4 pt-6 pb-12 text-white mx-auto w-full max-w-sm transition-colors duration-500"
+    id="card-to-download"
+    className="card-background flex flex-col items-stretch gap-4 px-4 pt-6 pb-12 text-white mx-auto w-full max-w-sm transition-colors duration-500"
     style={{ backgroundColor: backgroundColor }}
   >
     <div className="text-center">
