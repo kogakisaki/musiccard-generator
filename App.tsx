@@ -88,6 +88,14 @@ const App: React.FC = () => {
   const [dayText, setDayText] = useState<string>('Day 1');
   
   const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
+  const [isMobileDevice, setIsMobileDevice] = useState<boolean>(false); // Thêm state mới
+
+  useEffect(() => {
+    const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+    if (/android|ipad|iphone|ipod|blackberry|iemobile|opera mini/i.test(userAgent)) {
+      setIsMobileDevice(true);
+    }
+  }, []);
 
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -189,7 +197,11 @@ const App: React.FC = () => {
       className="relative flex size-full min-h-screen flex-col dark group/design-root overflow-y-auto pt-8 transition-colors duration-500"
       style={{ backgroundColor: backgroundColor }}
     >
-      <WelcomeModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <WelcomeModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        isMobileDevice={isMobileDevice} // Truyền prop mới
+      />
 
       <div className="flex-grow overflow-hidden">
         <MusicCard
