@@ -88,14 +88,7 @@ const App: React.FC = () => {
   const [dayText, setDayText] = useState<string>('Day 1');
   
   const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
-  const [isMobileDevice, setIsMobileDevice] = useState<boolean>(false); // Thêm state mới
-
-  useEffect(() => {
-    const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
-    if (/android|ipad|iphone|ipod|blackberry|iemobile|opera mini/i.test(userAgent)) {
-      setIsMobileDevice(true);
-    }
-  }, []);
+  const [showMobileWarning, setShowMobileWarning] = useState<boolean>(false);
 
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -112,6 +105,14 @@ const App: React.FC = () => {
       }
     };
   }, [albumArtSrc]);
+
+  // Detect mobile device and show warning
+  useEffect(() => {
+    const isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+    if (isMobile) {
+      setShowMobileWarning(true);
+    }
+  }, []);
 
   const handleAlbumArtChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -148,17 +149,24 @@ const App: React.FC = () => {
 
       const canvas = await html2canvas(cardRef.current, {
         useCORS: true,
-        allowTaint: true, // Thêm tùy chọn này
+        backgroundColor: null, // Transparent background for initial capture
         scale: 2,
         onclone: (clonedDocument: Document) => {
           const clonedCard = clonedDocument.getElementById('card-to-download');
           if (!clonedCard) return;
           
-          // Ensure background is applied to the cloned element for capture
           clonedCard.style.backgroundColor = backgroundColor;
-          clonedCard.style.overflow = 'hidden';
-          clonedCard.style.boxSizing = 'border-box';
+          
+          // Remove border radius from the card itself for sharp corners
+          clonedCard.style.borderRadius = '0px';
 
+          // Remove border radius from children (e.g., album art)
+          const roundedChildren = clonedCard.querySelectorAll('.rounded-xl');
+          roundedChildren.forEach(el => {
+            (el as HTMLElement).style.borderRadius = '0px';
+          });
+
+          // Replace editable inputs with static divs for rendering
           const inputs = clonedCard.querySelectorAll('input.editable-text');
           inputs.forEach(node => {
             const input = node as HTMLInputElement;
@@ -171,10 +179,35 @@ const App: React.FC = () => {
             div.style.margin = '-2px -4px';
             input.parentNode?.replaceChild(div, input);
           });
+
+          // Ensure play/pause button remains circular
+          const playPauseButton = clonedCard.querySelector('.player-button-bg');
+          if (playPauseButton) {
+            (playPauseButton as HTMLElement).style.borderRadius = '50%';
+          }
         },
       });
       
-      const imageDataUrl = canvas.toDataURL('image/png');
+      // Create a new canvas to add bottom padding
+      const bottomPadding = 64; // Add 32px of padding at 2x scale
+      const finalCanvas = document.createElement('canvas');
+      const ctx = finalCanvas.getContext('2d');
+
+      if (!ctx) {
+          throw new Error('Could not get canvas context');
+      }
+
+      finalCanvas.width = canvas.width;
+      finalCanvas.height = canvas.height + bottomPadding;
+
+      // Fill the new canvas with the background color
+      ctx.fillStyle = backgroundColor;
+      ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+
+      // Draw the original captured canvas onto the new one
+      ctx.drawImage(canvas, 0, 0);
+
+      const imageDataUrl = finalCanvas.toDataURL('image/png');
       const link = document.createElement('a');
       link.href = imageDataUrl;
       const safeFilename = title.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
@@ -194,16 +227,27 @@ const App: React.FC = () => {
 
   return (
     <div 
-      className="relative flex size-full min-h-screen flex-col dark group/design-root overflow-y-auto pt-8 transition-colors duration-500"
+      className="relative flex size-full min-h-screen flex-col dark group/design-root overflow-y-auto py-8 transition-colors duration-500"
       style={{ backgroundColor: backgroundColor }}
     >
-      <WelcomeModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        isMobileDevice={isMobileDevice} // Truyền prop mới
-      />
+      <WelcomeModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 
-      <div className="flex-grow overflow-hidden">
+      {showMobileWarning && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
+          <div className="bg-red-700 text-white p-6 rounded-lg shadow-lg text-center max-w-sm mx-4">
+            <h3 className="text-xl font-bold mb-4">Cảnh báo: Chế độ xem trên thiết bị di động</h3>
+            <p className="mb-4">Để có trải nghiệm tốt nhất, vui lòng chuyển sang chế độ xem trên máy tính hoặc sử dụng thiết bị máy tính.</p>
+            <button
+              onClick={() => setShowMobileWarning(false)}
+              className="bg-white text-red-700 px-4 py-2 rounded-full font-semibold hover:bg-gray-200 transition-colors"
+            >
+              Đã hiểu
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div className="my-auto">
         <MusicCard
           ref={cardRef}
           isPlaying={isPlaying}
@@ -230,9 +274,9 @@ const App: React.FC = () => {
       </div>
       
       <footer className="text-center text-white/50 text-sm mt-auto">
-        <a 
-          href="https://github.com/kogakisaki" 
-          target="_blank" 
+        <a
+          href="https://github.com/kogakisaki"
+          target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center hover:text-white transition-colors duration-200"
           aria-label="View developer's GitHub profile"

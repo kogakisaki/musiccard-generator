@@ -42,8 +42,8 @@ export const MusicCard = forwardRef<HTMLDivElement, MusicCardProps>(({
 }, ref) => (
   <div 
     ref={ref} 
-    id="card-to-download"
-    className="card-background flex flex-col items-stretch gap-4 px-4 pt-6 pb-12 text-white mx-auto w-full max-w-sm transition-colors duration-500"
+    id="card-to-download" 
+    className="flex flex-col items-stretch gap-4 px-4 pt-6 pb-8 text-white mx-auto w-full max-w-sm transition-colors duration-500"
     style={{ backgroundColor: backgroundColor }}
   >
     <div className="text-center">
@@ -116,7 +116,7 @@ export const MusicCard = forwardRef<HTMLDivElement, MusicCardProps>(({
       </button>
       <button 
         onClick={onPlayPauseClick}
-        className="flex shrink-0 items-center justify-center rounded-xl size-16 player-button-bg text-[#141f18] shadow-lg hover:scale-105 transition-transform duration-200"
+        className="flex shrink-0 items-center justify-center rounded-full size-16 player-button-bg text-[#141f18] shadow-lg hover:scale-105 transition-transform duration-200"
       >
         {isPlaying ? <PauseIcon /> : <PlayIcon />}
       </button>
