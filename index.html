@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Spline+Sans%3Awght%40400%3B500%3B700"
+    />
+    <title>Music Card Generator</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- html2canvas library for capturing HTML as an image -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+      body {
+        font-family: "Spline Sans", "Noto Sans", sans-serif;
+      }
+      html, body, #root {
+        height: 100%;
+        margin: 0;
+        overflow-x: hidden;
+      }
+      * {
+        border-radius: 0.5rem;
+      }
+      .group\/design-root {
+        border-radius: 0;
+      }
+      :root {
+        --player-accent-color: #94e0b2;
+      }
+      .player-button-text {
+        color: var(--player-accent-color);
+      }
+      .player-button-bg {
+        background-color: var(--player-accent-color);
+      }
+      .player-button-hover-bg-20:hover {
+        background-color: color-mix(in srgb, var(--player-accent-color) 20%, transparent);
+      }
+      .download-button-bg {
+        background-color: var(--player-accent-color);
+      }
+      input[type="color"] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        width: 40px;
+        height: 40px;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        border-radius: 0.5rem;
+        overflow: hidden;
+      }
+      input[type="color"]::-webkit-color-swatch-wrapper {
+        padding: 0;
+      }
+      input[type="color"]::-webkit-color-swatch {
+        border: 2px solid #ffffff;
+        border-radius: 0.5rem;
+      }
+      input[type="color"]::-moz-color-swatch-wrapper {
+        padding: 0;
+      }
+      input[type="color"]::-moz-color-swatch {
+        border: 2px solid #ffffff;
+        border-radius: 0.5rem;
+      }
+      .editable-text {
+          background-color: transparent;
+          border: 1px solid transparent;
+          text-align: center;
+          width: 100%;
+          padding: 2px 4px;
+          margin: -2px -4px; /* Counteract padding to maintain layout */
+          transition: border-color 0.2s, background-color 0.2s;
+        }
+        .editable-text:focus {
+          outline: none;
+          border-color: var(--player-accent-color);
+          background-color: rgba(255, 255, 255, 0.05);
+        }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.0",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
