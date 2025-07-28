@@ -116,7 +116,7 @@ export const MusicCard = forwardRef<HTMLDivElement, MusicCardProps>(({
       </button>
       <button 
         onClick={onPlayPauseClick}
-        className="flex shrink-0 items-center justify-center rounded-full size-16 player-button-bg text-[#141f18] shadow-lg hover:scale-105 transition-transform duration-200"
+        className="flex shrink-0 items-center justify-center rounded-xl size-16 player-button-bg text-[#141f18] shadow-lg hover:scale-105 transition-transform duration-200"
       >
         {isPlaying ? <PauseIcon /> : <PlayIcon />}
       </button>

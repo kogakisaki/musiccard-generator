@@ -140,6 +140,7 @@ const App: React.FC = () => {
 
       const canvas = await html2canvas(cardRef.current, {
         useCORS: true,
+        allowTaint: true, // Thêm tùy chọn này
         backgroundColor: backgroundColor, // Use dynamic background color
         scale: 2,
         onclone: (clonedDocument: Document) => {
