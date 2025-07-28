@@ -185,7 +185,7 @@ const App: React.FC = () => {
 
   return (
     <div 
-      className="relative flex size-full min-h-screen flex-col dark group/design-root overflow-y-auto py-8 transition-colors duration-500"
+      className="relative flex size-full min-h-screen flex-col dark group/design-root overflow-y-auto pt-8 transition-colors duration-500"
       style={{ backgroundColor: backgroundColor }}
     >
       <WelcomeModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
