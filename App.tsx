@@ -189,7 +189,7 @@ const App: React.FC = () => {
     >
       <WelcomeModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 
-      <div className="my-auto">
+      <div className="flex-grow overflow-hidden">
         <MusicCard
           ref={cardRef}
           isPlaying={isPlaying}
