@@ -150,7 +150,7 @@ const App: React.FC = () => {
       const canvas = await html2canvas(cardRef.current, {
         useCORS: true,
         backgroundColor: null, // Transparent background for initial capture
-        scale: 2,
+        scale: 4, // Tăng scale để tăng chất lượng ảnh
         onclone: (clonedDocument: Document) => {
           const clonedCard = clonedDocument.getElementById('card-to-download');
           if (!clonedCard) return;
